@@ -8,23 +8,23 @@
                 <div class="col-md-6">
                     <select class="form-control" name="rating">
                         <option value="" disabled selected>Select Stars to give</option>
-                        <option value="1">1 Terrible</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5 Great</option>
+                        <option value="1">&#9733;</option>
+                        <option value="2">&#9733;&#9733;</option>
+                        <option value="3">&#9733;&#9733;&#9733;</option>
+                        <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
-                    <input required type="text" class="form-control" name="title" placeholder="Title">
+                    <input required type="text" class="form-control" name="title" placeholder="Title" rows="3">
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-md-6">
-                    <textarea rows="3" cols="50" name="comment" placeholder="Description"></textarea>
-                </div>
+                <div class="col-md-6"><div class="form-group">
+                    <textarea class="form-control" rows="3" name="comment" placeholder="Description"></textarea>
+                </div></div>
             </div>
 
             <input type="hidden" name="sellerID" value='<?php echo $sellerID; ?>' />
