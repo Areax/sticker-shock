@@ -1,6 +1,11 @@
 <?php
 
-foreach($items as $item): ?> 
+require_once 'application/models/Review.php';
+require_once 'application/models/User.php';
+
+foreach($items as $item): 
+
+?> 
 
 <div class="col-lg-4 col-md-6 mb-4">
     <div class="card h-100">
@@ -25,7 +30,8 @@ foreach($items as $item): ?>
             <p class="card-text"><?php echo $item->description?></p>
             <p class="card-text">
                 <form action="/account/otherAccount" method="POST">
-                    <input type="hidden" name="user" type="Number" value="<?php echo $user->readUser($item->account_id)->user_id;?>" >
+                    <input type="hidden" name="user" type="Number" value="<?php $user = new User($this->db);
+                    	echo $user->readUser($item->account_id)->user_id;?>" >
                     <p>Seller:
                     <button type="submit" class="btn btn-link" name="submit"><?php echo $user->readUser($item->account_id)->username;?>
                     </button>

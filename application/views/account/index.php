@@ -1,10 +1,11 @@
 <?php require 'application/views/layouts/header.php';
-require 'application/models/Item.php';
+require_once 'application/models/Item.php';
+require_once 'application/models/User.php';
 $orders = $_SESSION['orderHis'];
-$listings =$_SESSION['listing'];
-/*require 'application/models/Order.php';
-$order = new Order($this->db);
-$orders = $order->getOrdersByAccountId($user->user_id);*/
+$listings = $_SESSION['listing'];
+# require 'application/models/Order.php';
+# $order = new Order($this->db);
+# $orders = $order->getOrdersByAccountId($user->user_id);
 
 ?>
 
