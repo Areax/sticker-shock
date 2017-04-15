@@ -130,7 +130,6 @@ class Items extends Controller {
         $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
         $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
         $this->item($item_id);
-
     }
 
     public function updatestatus($item_id){

@@ -97,7 +97,7 @@
                 <hr>
                 <?php if(count($listings) > 0) {
                     $count = 0;
-                    foreach($listings as $item) {if($count >=3) break; $count++; ?>
+                    foreach(array_reverse($listings) as $item) {if($count >=3) break; $count++; ?>
 
                         <div class="well">
 
@@ -105,14 +105,14 @@
                                 <div class="media-left col-lg-5">
                                     <img src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" class="media-object" style="width:300px">
                                 </div>
-                                <div class="media-body col-lg-5">
+                                <div class="media-body col-lg-5"  style="word-wrap: break-word; display: inline-block;">
                                     <h4 class="media-heading"><?php echo $item->item_name?></h4>
                                     <p><?php echo $item->description?></p>
                                 </div>
                                 <div class="media-right col-lg-2">
                                     <form action="/items/edititem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-secondary btn-block" name="edititem">Edit</button>
+                                            <button <?php if($item->available != 1){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-secondary btn-block" name="edititem">Edit</button>
                                         </div>
                                     </form>
                                     <form action="/items/deleteitem/<?php echo $item->item_id?>" method="POST">
@@ -140,7 +140,7 @@
                     </div> <?php }?>
                 </div>
                 <hr>
-                    <?php foreach($orders as $order){?>
+                    <?php foreach(array_reverse($orders) as $order){?>
                         <div class="well">
                             <div class="row">
                                 <div class="col-md-3">
