@@ -12,7 +12,7 @@ use PayPal\Api\Payout;
 use PayPal\Api\PayoutSenderBatchHeader;
 use PayPal\Api\PayoutItem;
 use PayPal\Api\Currency;
-use PayPal\Api\ResultPrinter;
+use PayPal\Api\Sale;
 
 
 require 'application/helper/start.php';
@@ -25,13 +25,14 @@ $product = $_POST['item_name'];
 $price = $_POST['price'];
 $shipping = $_POST['shipping'];
 $item_id = $_POST['item_id'];
-
 $total = $price + $shipping;
+
 $payer = new Payer();
 $payer->setPaymentMethod('paypal');
 
 $item = new Item();
 $item->setName($product)
+    ->setSku($item_id)
 	->setCurrency('USD')
 	->setQuantity(1)
 	->setPrice($price);
@@ -55,7 +56,7 @@ $transaction->setAmount($amount)
 	->setInvoiceNumber(uniqid());
 
 $redirectUrls = new RedirectUrls();
-$redirectUrls->setReturnUrl(SITE_URL . '/pages/success')
+$redirectUrls->setReturnUrl(SITE_URL . '/items/purchasesuccess')
 	->setCancelUrl(SITE_URL . '/pages/error');
 
 $payment = new Payment();
@@ -65,42 +66,17 @@ $payment->setIntent('sale')
 	->setTransactions([$transaction]);
 
 try{
-	$payment_output = $payment->create($paypal);
+	$payment->create($paypal);
 
 } catch(Exception $e) {
 	die($e);
 }
 
-$_SESSION['payment'] = $_GET['shipping_address'];
-
-$payouts = new Payout();
-$senderBatchHeader = new PayoutSenderBatchHeader();
-$senderBatchHeader->setSenderBatchId(uniqid())
-    ->setEmailSubject("You have a Payout!");
-$senderItem = new PayoutItem();
-$senderItem->setRecipientType('Email')
-    ->setNote('Thanks for your patronage!')
-    ->setReceiver('moriahmaney@gmail.com')
-    ->setSenderItemId($item_id)
-    ->setAmount(new Currency('{
-                        "value": "'.$total.'",
-                        "currency":"USD"
-                    }'));
-$payouts->setSenderBatchHeader($senderBatchHeader)
-    ->addItem($senderItem);
-
-try {
-    $output = $payouts->createSynchronous($paypal);
-} catch (Exception $e) {
-	echo 'Error <br>';
-	echo $e;
-}
-
+$_SESSION['payment'] = serialize($payment);
 $approvalUrl = $payment->getApprovalLink();
 header("Location: {$approvalUrl}");
 
 
-?>
 
 
 

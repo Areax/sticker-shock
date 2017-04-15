@@ -1,10 +1,11 @@
+
 <?php
 
 class Pages extends Controller {
 
     public function index() {
         $this->title="Home";
-        require_once 'application/models/User.php';
+        require 'application/models/User.php';
         $user = new User($this->db);
         $items = $this->model->readAllItems();
         require 'application/views/pages/index.php';
@@ -26,18 +27,6 @@ class Pages extends Controller {
         require 'application/views/pages/error.php';
     }
 
-
-    public function checkout() {
-        $this->title = "checkout";
-
-        require 'application/views/pages/checkout.php';
-    }
-
-    public function success() {
-        $this->title = "success";
-
-        require 'application/views/pages/success.php';
-    }
 
     public function loadModel()
     {

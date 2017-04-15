@@ -8,7 +8,7 @@ page (which is currently a clone of the home page).
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="container">
-        <a class="navbar-brand" href="/">STICKERSHOCK</a>
+        <a class="navbar-left navbar-brand" href="/"><img src="/images/logo.png" style="max-height: 30px;padding-right: 5px;"/>STICKERSHOCK</a>
         <div class="collapse navbar-collapse" id="navbarExample">
         	
         	<?php
@@ -26,7 +26,7 @@ page (which is currently a clone of the home page).
         </form>        
             <ul class="navbar-nav ml-auto">
                 <li class= "<?php if ($page==0) echo 'nav-item active'; else echo 'nav-item'?>" >
-                    <a class="nav-link" href="/">Browse<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/items">Browse<span class="sr-only">(current)</span></a>
                 </li>
                 <li class= "<?php if ($page==1) echo 'nav-item active'; else echo 'nav-item'?>">
                     <a class="nav-link" href="/account/sell">Sell</a>
