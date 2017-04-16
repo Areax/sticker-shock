@@ -167,7 +167,7 @@
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <div class="text-center">
                                         <h7>
                                             <b>Ship to<br></b>
@@ -194,15 +194,7 @@
                                             <b>Date<br></b>
                                             <?php
                                             echo date("m/d/Y", strtotime($order->completion_date));
-                                            $date?>
-                                        </h7>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <h7>
-                                            <b>Time<br></b>
-                                            <?php
+                                            echo '<br>';
                                             echo date("g:i A ", strtotime($order->completion_date));
                                             echo date_default_timezone_get();
                                             ?>
