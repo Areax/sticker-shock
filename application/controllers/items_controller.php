@@ -117,6 +117,16 @@ class Items extends Controller {
         require 'application/views/items/edit.php';
     }
 
+    public function editsolditem($id){
+        $item = $this->model->getItemById($id);
+        if (!$item) {
+            header('location: /pages/error');
+            return;
+        }
+        $this->title = 'Update Item: '.$item->item_name;
+        require 'application/views/items/update.php';
+    }
+
     public function updateitem($id, $status){
         $account_id = $_SESSION['id'];
         $item_id = $id;
@@ -131,6 +141,24 @@ class Items extends Controller {
         $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
         $this->item($item_id);
 
+    }
+
+    public function updatesolditem($id){
+        $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
+        $comments = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+        $item = $this->model->getItemById($id);
+        $account_id = $item->account_id;
+        $item_id = $id;
+        $title = $item->item_name;
+        $size = $item->size;
+        $price = $item->price;
+        $shipping = $item->shipping;
+        $description = $item->description;
+        $category = $item->category;
+        $subcategory = $item->subcategory;
+        $status = 0;
+        $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
+        header('location: /account');
     }
 
     public function updatestatus($item_id){

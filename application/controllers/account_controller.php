@@ -10,7 +10,8 @@ class Account extends Controller {
         # If they aren't redirect to login page.
         if (isset($_SESSION['username'])) {
             require 'application/models/Item.php';
-
+            require 'application/models/Order.php';
+            $order_helper = new Order($this->db);
             $user = $this->model->readUser($_SESSION['id']);
             $orders = $this->model->getOrderFromUser($_SESSION['id']);
             $listings = $this->model->getSaleList($_SESSION['id']);

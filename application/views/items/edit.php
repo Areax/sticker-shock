@@ -34,17 +34,12 @@
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input placeholder="Tracking Number" value="<?php echo $item->tracking_number;?>" class="form-control" type="text" name="tracking">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-md-6">
                 <textarea class="form-control" name="description" rows="6"><?php echo $item->description;?></textarea>
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                <button type="submit" class="btn btn-bw" name="submit">Submit</button>
             </div>
         </div>
     </form>

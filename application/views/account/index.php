@@ -110,14 +110,22 @@
                                     <p><?php echo $item->description?></p>
                                 </div>
                                 <div class="media-right col-lg-2">
+                                    <?php if($item->available){?>
                                     <form action="/items/edititem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-secondary btn-block" name="edititem">Edit</button>
                                         </div>
                                     </form>
+                                    <?php }else{ ?>
+                                        <form action="/items/editsolditem/<?php echo $item->item_id?>" method="POST">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-secondary btn-block" name="updateitem">Update</button>
+                                            </div>
+                                        </form>
+                                    <?php }?>
                                     <form action="/items/deleteitem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
-                                            <button <?php if($item->available != 1){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-danger btn-block" name="deleteitem">Delete</button>
+                                            <button <?php if(!$item->available){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-danger btn-block" name="deleteitem">Delete</button>
                                         </div>
                                     </form>
                                 </div>
@@ -143,7 +151,7 @@
                     <?php foreach($orders as $order){?>
                         <div class="well">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Order Id<br></b>
@@ -151,7 +159,7 @@
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Total<br></b>
@@ -159,19 +167,45 @@
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Ship to<br></b>
-                                            <?php echo$order->address_1 ?>
+                                            <?php echo$order->address_1 . ' ' .$order->address_2 .'<br>'. $order->city . ', ' .' '.$order->state .' '. $order->zip; ?>
+
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        <h7>
+                                            <b>Tracking<br></b>
+                                        </h7>
+                                        <?php
+                                            $details = $order_helper->getItemIdFromOrderId($order->order_id);
+                                            $item = $items->getItemById($details->item_id);
+                                            echo $item->tracking_number;
+                                            ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Date<br></b>
-                                            <?php echo $order->completion_date ?>
+                                            <?php
+                                            echo date("m/d/Y", strtotime($order->completion_date));
+                                            $date?>
+                                        </h7>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        <h7>
+                                            <b>Time<br></b>
+                                            <?php
+                                            echo date("g:i A ", strtotime($order->completion_date));
+                                            echo date_default_timezone_get();
+                                            ?>
                                         </h7>
                                     </div>
                                 </div>
