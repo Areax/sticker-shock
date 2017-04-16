@@ -29,3 +29,7 @@ footer{
     bottom:0;
     width: 100%;
 }
+
+.break-word{
+    word-wrap: break-word;
+}

@@ -10,7 +10,8 @@ class Account extends Controller {
         # If they aren't redirect to login page.
         if (isset($_SESSION['username'])) {
             require 'application/models/Item.php';
-
+            require 'application/models/Order.php';
+            $order_helper = new Order($this->db);
             $user = $this->model->readUser($_SESSION['id']);
             $orders = $this->model->getOrderFromUser($_SESSION['id']);
             $listings = $this->model->getSaleList($_SESSION['id']);
@@ -28,6 +29,7 @@ class Account extends Controller {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode(',',$url); 
         }
+        $_SESSION['http_ref'] = $_SERVER['HTTP_REFERER'];
         $this->title = 'Log In';
         require 'application/views/account/login.php';
     }
@@ -147,8 +149,16 @@ class Account extends Controller {
         if(!$orderId)
             require 'application/views/pages/error.php';
         else {
+            require 'application/models/Order.php';
+            require 'application/models/Item.php';
+            $this->title = 'Invoice';
             $invoice = $this->model->getPurchase($orderId);
+            $order_helper = new Order($this->db);
+            $details = $order_helper ->getItemIdFromOrderId($orderId);
+            $item_helper = new Item($this->db);
+            $item = $item_helper->getItemById($details->item_id);
             require 'application/views/account/invoice.php';
+
         }
     }
 

@@ -57,7 +57,7 @@ class Item extends Model {
         }
         if (isset($search)) {
             $search = strtolower($search);
-            $sql .= " AND (LOWER(item_name) LIKE '%$search%' OR LOWER(category) LIKE '%$search%' OR LOWER(subcategory) LIKE '%$search%' OR LOWER(description) LIKE '%$search%')";
+            $sql .= " AND (LOWER(item_name) LIKE '%$search%' OR LOWER(category) LIKE '%$search%' OR LOWER(subcategory) LIKE '%$search%' OR LOWER(description) LIKE '%$search%' OR LOWER(size) LIKE '%$search%')";
         }
         $query = $this->db->prepare($sql);
         $query->execute();
