@@ -144,6 +144,10 @@ class Items extends Controller {
     }
 
     public function updatesolditem($id){
+        require 'application/models/Order.php';
+        require 'application/models/User.php';
+        $user_helper = new User($this->db);
+        $order_helper = new Order($this->db);
         $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
         $comments = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
         $item = $this->model->getItemById($id);
@@ -158,6 +162,19 @@ class Items extends Controller {
         $subcategory = $item->subcategory;
         $status = 0;
         $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
+        $message = $comments;
+        $message = wordwrap($message, 70, "\r\n");
+        $order_details = $order_helper->getOrderByItemId($item_id);
+        $order_details = $order_helper->getOrderById($order_details->order_id);
+        $recipient = $user_helper->readUser($order_details->account_id);
+        $subject = "Item \"$title\" Shipped!";
+        $recipient_email = $recipient->email;
+        $mailheader = "From: stickershock2@gmail.com \r\n";
+        $formcontent = "Your item has been shipped!\r\nTracking Number: $tracking\n\r";
+        if($comments !=''){
+            $formcontent .= "Comments From Seller: $message";
+        }
+        $mail = mail($recipient_email, $subject, $formcontent, $mailheader);
         header('location: /account');
     }
 
