@@ -20,8 +20,10 @@
                                 <input type="hidden" name="shipping" value="<?php echo $item->shipping?>">
                                 <input type="hidden" name="seller_id" value="<?php echo$item->account_id?>">
                                 <input type="hidden" name="item_id" value="<?php echo $item->item_id?>">
+                                <?php if(isset($_SESSION['id']) && $_SESSION['id'] != $item->account_id){?>
                                 <button type="submit" class="btn-ss btn-bw" name="submit"> Purchase
                                 </button>
+                                <?php }?>
                             </form>
                         </div>
                         <br>
