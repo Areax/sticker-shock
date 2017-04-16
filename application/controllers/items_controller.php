@@ -172,7 +172,7 @@ class Items extends Controller {
             require 'application/helper/checkout.php';
         }else{
             $_SESSION['login_error'] = 'You must be logged in to purchase an item';
-            header('location: /account/login');
+            header('location: /account/login?page=items,item,' .$_POST['item_id']);
         }
 
     }

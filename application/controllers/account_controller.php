@@ -29,6 +29,7 @@ class Account extends Controller {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode(',',$url); 
         }
+        $_SESSION['http_ref'] = $_SERVER['HTTP_REFERER'];
         $this->title = 'Log In';
         require 'application/views/account/login.php';
     }
