@@ -154,7 +154,7 @@
                                 <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
-                                            <b>Order Id<br></b>
+                                            <b>Order Number<br></b>
                                             <?php echo $order->order_id ?>
                                         </h7>
                                     </div>
