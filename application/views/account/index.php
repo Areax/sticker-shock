@@ -134,7 +134,7 @@
                             </div>
 
                         </div>
-                    <?php }} else {echo '<p>You have no listings! <a href="/pages/sell">Create a listing here.</a>';}?>
+                    <?php }} else {echo '<p>You have no listings! <a href="/account/sell">Create a listing here.</a>';}?>
 
                 <br>
                 <div class="h2">Your Orders</div>
