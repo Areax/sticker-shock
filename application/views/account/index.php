@@ -98,9 +98,7 @@
                 <?php if(count($listings) > 0) {
                     $count = 0;
                     foreach($listings as $item) { $count++; ?>
-
                         <div class="well break-word">
-
                             <div class="media row">
                                 <div class="media-left col-lg-5">
                                     <img src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" class="media-object" style="width:300px">
@@ -132,7 +130,7 @@
                             </div>
 
                         </div>
-                    <?php }} else {echo '<hr><p>You have no listings! <a href="/pages/sell">Create a listing here.</a>';}?>
+                    <?php }} else {echo '<p>You have no listings! <a href="/pages/sell">Create a listing here.</a>';}?>
 
                 <br>
                 <div class="h2">Your Orders</div>

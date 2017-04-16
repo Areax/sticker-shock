@@ -44,7 +44,8 @@ class Item extends Model {
 
         return $query->fetch();
     }
-  
+
+
     public function readAllItems($category = null, $subcategory = null, $search = null) {
         $sql = "SELECT Items.item_id, Items.account_id, Items.item_name, Items.price, Items.description, Items.shipping, Items.category, Items.subcategory, Accounts.rating FROM Items LEFT JOIN Accounts ON Items.account_id = Accounts.user_id WHERE available=true";
         if (isset($category)) {
