@@ -43,6 +43,10 @@
                         <div class="col-8"> <h7><?= $user->email;?></h7><br></div>
                     </div>
                     <div class="row">
+                        <div class="col-4"> <h7> Paypal Email:</h7><br> </div>
+                        <div class="col-8"> <h7><?= $user->paypal_email;?></h7><br></div>
+                    </div>
+                    <div class="row">
                         <div class="col-4"> <h7> Gender:</h7><br></div>
                         <div class="col-8">
                             <h7><?php

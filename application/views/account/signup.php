@@ -19,6 +19,11 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-6">
+                        <input required type="email" class="form-control" name="paypal_email" placeholder="PayPal Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
                         <input required type="text" class="form-control" name="username" placeholder="Username">
                     </div>
                 </div>

@@ -32,6 +32,10 @@ use PayPal\Api\Currency;
         $_POST['country'] = $shipping_address->country_code;
         $_POST['recipient_name'] = $shipping_address->recipient_name;
         $_SESSION['POST'] = $_POST;
+        $item_details = $item->getItemById($_POST['item_id']);
+        $seller_id = $item_details->account_id;
+        $seller_details = $user->readUser($seller_id);
+        $seller_email = $seller_details->paypal_email;
         $payouts = new Payout();
         $senderBatchHeader = new PayoutSenderBatchHeader();
         $senderBatchHeader->setSenderBatchId(uniqid())
@@ -39,7 +43,7 @@ use PayPal\Api\Currency;
         $senderItem = new PayoutItem();
         $senderItem->setRecipientType('Email')
             ->setNote('Thanks for your patronage!')
-            ->setReceiver('moriahmaney@gmail.com')
+            ->setReceiver($seller_email)
             ->setAmount(new Currency('{
                 "value": "'.$_POST['total'].'",
                 "currency":"USD"
