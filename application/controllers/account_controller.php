@@ -129,7 +129,7 @@ class Account extends Controller {
         $listings = $this->model->getItemsByUser($user_id);
         $review = new Review($this->db);
         $reviews = $review->getReviewsByUser($user->user_id);
-        $this->title = $user->username . '\'s Profile';
+        $this->title = $user->username . '\'s Account History';
         require 'application/views/account/profile.php';
 
     }
