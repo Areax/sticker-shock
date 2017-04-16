@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <div class = "text-left">
                     <p>
-                    <div class="h2"  >
+                    <div class="h2">
                         <?php
                         if(isset($user->first_name) && isset($_SERVER['HTTP_REFERER']) &&strpos($_SERVER['HTTP_REFERER'], "/login")){
                             echo 'Welcome back, '. $user->first_name .'!';
@@ -28,7 +28,7 @@
             </div>
             <br>
             <!-- 2nd column. all information-->
-            <div class="col-md-9">
+            <div class="col-md-9 break-word">
                 <!-- 1st section information-->
                 <div class="h2">Account Information</div>
                 <hr>
@@ -99,7 +99,7 @@
                     $count = 0;
                     foreach($listings as $item) { $count++; ?>
 
-                        <div class="well">
+                        <div class="well break-word">
 
                             <div class="media row">
                                 <div class="media-left col-lg-5">
@@ -149,7 +149,7 @@
                 </div>
                 <hr>
                     <?php foreach($orders as $order){?>
-                        <div class="well">
+                        <div class="well break-word">
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="text-center">
