@@ -10,7 +10,8 @@ class Account extends Controller {
         # If they aren't redirect to login page.
         if (isset($_SESSION['username'])) {
             require 'application/models/Item.php';
-
+            require 'application/models/Order.php';
+            $order_helper = new Order($this->db);
             $user = $this->model->readUser($_SESSION['id']);
             $orders = $this->model->getOrderFromUser($_SESSION['id']);
             $listings = $this->model->getSaleList($_SESSION['id']);
@@ -28,6 +29,7 @@ class Account extends Controller {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode(',',$url); 
         }
+        $_SESSION['http_ref'] = $_SERVER['HTTP_REFERER'];
         $this->title = 'Log In';
         require 'application/views/account/login.php';
     }
@@ -67,13 +69,14 @@ class Account extends Controller {
         $fname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
         $lname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
         $gender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
         $address1 = filter_input(INPUT_POST, 'address1', FILTER_SANITIZE_STRING);
         $address2 = filter_input(INPUT_POST, 'address2', FILTER_SANITIZE_STRING);
         $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
         $state = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
         $zip = filter_input(INPUT_POST, 'zip', FILTER_SANITIZE_STRING);
-        $this->model->updateUser($_SESSION['id'],$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip);
+        $this->model->updateUser($_SESSION['id'],$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip, $paypal_email);
         $this->index();
     }
 
@@ -82,6 +85,7 @@ class Account extends Controller {
         $fname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
         $lname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
         $hashpass = password_hash($password, PASSWORD_DEFAULT);
         $gender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
@@ -95,7 +99,7 @@ class Account extends Controller {
             $this->signup();
         }
         else {
-            $this->model->createUser($username, $fname, $lname, $email, $hashpass, $gender, $address1, $address2, $city, $state, $zip);
+            $this->model->createUser($username, $fname, $lname, $email, $hashpass, $gender, $address1, $address2, $city, $state, $zip, $paypal_email);
             $this->login();
         }
     }
@@ -125,7 +129,7 @@ class Account extends Controller {
         $listings = $this->model->getItemsByUser($user_id);
         $review = new Review($this->db);
         $reviews = $review->getReviewsByUser($user->user_id);
-        $this->title = $user->username . '\'s Profile';
+        $this->title = $user->username . '\'s Account History';
         require 'application/views/account/profile.php';
 
     }
@@ -147,8 +151,16 @@ class Account extends Controller {
         if(!$orderId)
             require 'application/views/pages/error.php';
         else {
+            require 'application/models/Order.php';
+            require 'application/models/Item.php';
+            $this->title = 'Invoice';
             $invoice = $this->model->getPurchase($orderId);
+            $order_helper = new Order($this->db);
+            $details = $order_helper ->getItemIdFromOrderId($orderId);
+            $item_helper = new Item($this->db);
+            $item = $item_helper->getItemById($details->item_id);
             require 'application/views/account/invoice.php';
+
         }
     }
 

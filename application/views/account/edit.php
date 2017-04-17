@@ -4,25 +4,27 @@
     <form action="/account/submit_edit" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required type="text" name="firstname" placeholder="First Name" value="<?= $user->first_name;?>"
-                       style="width:400px">
+                <input required class="form-control" type="text" name="firstname" placeholder="First Name" value="<?= $user->first_name;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required type="text" name="lastname" placeholder="Last Name" value="<?= $user->last_name;?>"
-                       style="width:400px">
+                <input required class="form-control" type="text" name="lastname" placeholder="Last Name" value="<?= $user->last_name;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required type="email" name="email" placeholder="Email" value="<?= $user->email;?>"
-                       style="width:400px">
+                <input required class="form-control" type="email" name="email" placeholder="Email" value="<?= $user->email;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <select class="form-control" name="gender" style="width:400px">
+                <input required class="form-control" type="email" name="paypal_email" placeholder="Paypal Email" value="<?= $user->paypal_email;?>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <select class="form-control" name="gender" >
                     <?php
                     if($user->gender === 'M'){
                     ?>
@@ -40,33 +42,28 @@
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input type="text" name="address1" placeholder="Address 1" value="<?= $user->address_1;?>"
-                       style="width:400px">
+                <input class="form-control" type="text" name="address1" placeholder="Address 1" value="<?= $user->address_1;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input type="text" name="address2" placeholder="Address 2" value="<?= $user->address_2;?>"
-                       style="width:400px">
+                <input class="form-control" type="text" name="address2" placeholder="Address 2" value="<?= $user->address_2;?>">
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-6">
-                <input type="text" name="city" placeholder="City" value="<?= $user->city;?>"
-                       style="width:400px">
+                <input class="form-control" type="text" name="city" placeholder="City" value="<?= $user->city;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input type="text" name="state" placeholder="State" value="<?= $user->state;?>"
-                       style="width:400px">
+                <input class="form-control" type="text" name="state" placeholder="State" value="<?= $user->state;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input type="text" name="zip" placeholder="Zip" value="<?= $user->zip;?>"
-                       style="width:400px">
+                <input class="form-control" type="text" name="zip" placeholder="Zip" value="<?= $user->zip;?>">
             </div>
         </div>
         <?php

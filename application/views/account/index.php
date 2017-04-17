@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <div class = "text-left">
                     <p>
-                    <div class="h2"  >
+                    <div class="h2">
                         <?php
                         if(isset($user->first_name) && isset($_SERVER['HTTP_REFERER']) &&strpos($_SERVER['HTTP_REFERER'], "/login")){
                             echo 'Welcome back, '. $user->first_name .'!';
@@ -28,7 +28,7 @@
             </div>
             <br>
             <!-- 2nd column. all information-->
-            <div class="col-md-9">
+            <div class="col-md-9 break-word">
                 <!-- 1st section information-->
                 <div class="h2">Account Information</div>
                 <hr>
@@ -41,6 +41,10 @@
                     <div class="row">
                         <div class="col-4"> <h7> Email:</h7><br> </div>
                         <div class="col-8"> <h7><?= $user->email;?></h7><br></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"> <h7> Paypal Email:</h7><br> </div>
+                        <div class="col-8"> <h7><?= $user->paypal_email;?></h7><br></div>
                     </div>
                     <div class="row">
                         <div class="col-4"> <h7> Gender:</h7><br></div>
@@ -97,10 +101,8 @@
                 <hr>
                 <?php if(count($listings) > 0) {
                     $count = 0;
-                    foreach(array_reverse($listings) as $item) {if($count >=3) break; $count++; ?>
-
-                        <div class="well">
-
+                    foreach(array_reverse($listings) as $item) { $count++; ?>
+                        <div class="well break-word">
                             <div class="media row">
                                 <div class="media-left col-lg-5">
                                     <img src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" class="media-object" style="width:300px">
@@ -110,21 +112,29 @@
                                     <p><?php echo $item->description?></p>
                                 </div>
                                 <div class="media-right col-lg-2">
+                                    <?php if($item->available){?>
                                     <form action="/items/edititem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
                                             <button <?php if($item->available != 1){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-secondary btn-block" name="edititem">Edit</button>
                                         </div>
                                     </form>
+                                    <?php }else{ ?>
+                                        <form action="/items/editsolditem/<?php echo $item->item_id?>" method="POST">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-secondary btn-block" name="updateitem">Update</button>
+                                            </div>
+                                        </form>
+                                    <?php }?>
                                     <form action="/items/deleteitem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
-                                            <button <?php if($item->available != 1){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-danger btn-block" name="deleteitem">Delete</button>
+                                            <button <?php if(!$item->available){echo 'style="visibility:hidden;"';};?> type="submit" class="btn btn-danger btn-block" name="deleteitem">Delete</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
 
                         </div>
-                    <?php }} else {echo '<hr><p>You have no listings! <a href="/pages/sell">Create a listing here.</a>';}?>
+                    <?php }} else {echo '<p>You have no listings! <a href="/account/sell">Create a listing here.</a>';}?>
 
                 <br>
                 <div class="h2">Your Orders</div>
@@ -141,17 +151,17 @@
                 </div>
                 <hr>
                     <?php foreach(array_reverse($orders) as $order){?>
-                        <div class="well">
+                        <div class="well break-word">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
-                                            <b>Order Id<br></b>
+                                            <b>Order Number<br></b>
                                             <?php echo $order->order_id ?>
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Total<br></b>
@@ -159,19 +169,37 @@
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="text-center">
                                         <h7>
                                             <b>Ship to<br></b>
-                                            <?php echo$order->address_1 ?>
+                                            <?php echo$order->address_1 . ' ' .$order->address_2 .'<br>'. $order->city . ', ' .' '.$order->state .' '. $order->zip; ?>
+
                                         </h7>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        <h7>
+                                            <b>Tracking<br></b>
+                                        </h7>
+                                        <?php
+                                            $details = $order_helper->getItemIdFromOrderId($order->order_id);
+                                            $item = $items->getItemById($details->item_id);
+                                            echo $item->tracking_number;
+                                            ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         <h7>
                                             <b>Date<br></b>
-                                            <?php echo $order->completion_date ?>
+                                            <?php
+                                            echo date("m/d/Y", strtotime($order->completion_date));
+                                            echo '<br>';
+                                            echo date("g:i A ", strtotime($order->completion_date));
+                                            echo date_default_timezone_get();
+                                            ?>
                                         </h7>
                                     </div>
                                 </div>
@@ -181,7 +209,7 @@
                                 <div class="col-lg-9">
                                     <div class="media">
                                         <img class="d-flex mr-5"
-                                             src="https://placehold.it/700x400" alt="Generic placeholder image" style="width:300px">
+                                             src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" alt="Generic placeholder image" style="width:300px">
                                         <div class="media-body">
                                             <h4 class="media-heading"><?php echo $order->item_name?></h4>
                                             <p><?php echo $order->description;?></p>

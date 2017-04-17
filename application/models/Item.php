@@ -44,7 +44,8 @@ class Item extends Model {
 
         return $query->fetch();
     }
-  
+
+
     public function readAllItems($category = null, $subcategory = null, $search = null) {
         $sql = "SELECT Items.item_id, Items.account_id, Items.item_name, Items.price, Items.description, Items.shipping, Items.category, Items.subcategory, Accounts.rating FROM Items LEFT JOIN Accounts ON Items.account_id = Accounts.user_id WHERE available=true";
         if (isset($category)) {
@@ -57,7 +58,7 @@ class Item extends Model {
         }
         if (isset($search)) {
             $search = strtolower($search);
-            $sql .= " AND (LOWER(item_name) LIKE '%$search%' OR LOWER(category) LIKE '%$search%' OR LOWER(subcategory) LIKE '%$search%' OR LOWER(description) LIKE '%$search%')";
+            $sql .= " AND (LOWER(item_name) LIKE '%$search%' OR LOWER(category) LIKE '%$search%' OR LOWER(subcategory) LIKE '%$search%' OR LOWER(description) LIKE '%$search%' OR LOWER(size) LIKE '%$search%')";
         }
         $query = $this->db->prepare($sql);
         $query->execute();

@@ -117,6 +117,16 @@ class Items extends Controller {
         require 'application/views/items/edit.php';
     }
 
+    public function editsolditem($id){
+        $item = $this->model->getItemById($id);
+        if (!$item) {
+            header('location: /pages/error');
+            return;
+        }
+        $this->title = 'Update Item: '.$item->item_name;
+        require 'application/views/items/update.php';
+    }
+
     public function updateitem($id, $status){
         $account_id = $_SESSION['id'];
         $item_id = $id;
@@ -132,6 +142,41 @@ class Items extends Controller {
         $this->item($item_id);
     }
 
+    public function updatesolditem($id){
+        require 'application/models/Order.php';
+        require 'application/models/User.php';
+        $user_helper = new User($this->db);
+        $order_helper = new Order($this->db);
+        $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
+        $comments = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+        $item = $this->model->getItemById($id);
+        $account_id = $item->account_id;
+        $item_id = $id;
+        $title = $item->item_name;
+        $size = $item->size;
+        $price = $item->price;
+        $shipping = $item->shipping;
+        $description = $item->description;
+        $category = $item->category;
+        $subcategory = $item->subcategory;
+        $status = 0;
+        $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
+        $message = $comments;
+        $message = wordwrap($message, 70, "\r\n");
+        $order_details = $order_helper->getOrderByItemId($item_id);
+        $order_details = $order_helper->getOrderById($order_details->order_id);
+        $recipient = $user_helper->readUser($order_details->account_id);
+        $subject = "Item \"$title\" Shipped!";
+        $recipient_email = $recipient->email;
+        $mailheader = "From: stickershock2@gmail.com \r\n";
+        $formcontent = "Your item has been shipped!\r\nTracking Number: $tracking\n\r";
+        if($comments !=''){
+            $formcontent .= "Comments From Seller: $message";
+        }
+        $mail = mail($recipient_email, $subject, $formcontent, $mailheader);
+        header('location: /account');
+    }
+
     public function updatestatus($item_id){
         $this->model->purchaseItem($item_id);
         header('location: /orders/createorder');
@@ -143,7 +188,7 @@ class Items extends Controller {
             require 'application/helper/checkout.php';
         }else{
             $_SESSION['login_error'] = 'You must be logged in to purchase an item';
-            header('location: /account/login');
+            header('location: /account/login?page=items,item,' .$_POST['item_id']);
         }
 
     }

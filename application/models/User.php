@@ -2,13 +2,15 @@
 class User extends Model {
     public $error;
 
-    public function createUser($username, $fname, $lname, $email, $password, $gender, $address1, $address2, $city, $state, $zip){
-        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, gender, address_1, address_2, city, state, zip) 
-          VALUES (:username, :firstname, :lastname, :email, :password, :gender, :address1, :address2, :city, :state, :zip)");
+    public function createUser($username, $fname, $lname, $email, $password, $gender, $address1, $address2, $city, $state, $zip, $paypal_email){
+        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, gender, address_1, address_2, city, state, zip, paypal_email) 
+          VALUES (:username, :firstname, :lastname, :email, :password, :gender, :address1, :address2, :city, :state, :zip, :paypal_email)");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':paypal_email', $paypal_email);
+
         $stmt->bindParam(':password', $password);
         $stmt->bindparam(':gender', $gender);
         $stmt->bindparam(':address1', $address1);
@@ -34,13 +36,14 @@ class User extends Model {
         return $result;
     }
 
-    public function updateUser($id,$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip){
+    public function updateUser($id,$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip, $paypal_email){
         $stmt= $this->db->prepare("UPDATE Accounts SET first_name = :firstname,last_name = :lastname,email = :email,
-              gender= :gender,address_1=:address1,address_2=:address2,city=:city,state=:state,zip=:zip WHERE user_id = :userId");
+              gender= :gender,address_1=:address1,address_2=:address2,city=:city,state=:state,zip=:zip, paypal_email = :paypal_email WHERE user_id = :userId");
         $stmt->bindParam(':userId',$id);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':paypal_email', $paypal_email);
         $stmt->bindparam(':gender', $gender);
         $stmt->bindparam(':address1', $address1);
         $stmt->bindparam(':address2', $address2);
