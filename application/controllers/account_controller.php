@@ -29,7 +29,8 @@ class Account extends Controller {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode(',',$url); 
         }
-        $_SESSION['http_ref'] = $_SERVER['HTTP_REFERER'];
+        if(isset($_SERVER['HTTP_REFERER']))
+            $_SESSION['http_ref'] = $_SERVER['HTTP_REFERER'];
         $this->title = 'Log In';
         require 'application/views/account/login.php';
     }
@@ -69,10 +70,18 @@ class Account extends Controller {
         $lname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $confirm_password = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
         $hashpass = password_hash($password, PASSWORD_DEFAULT);
-        $this->model->updateUser($_SESSION['id'],$fname,$lname,$email,$hashpass, $paypal_email);
-        $this->index();
+        $this->model->validateEdit($_SESSION['id'], $username, $email, $password, $confirm_password);
+        if((isset($_SESSION['username_taken_err']) && $_SESSION['username_taken_err'] != '') || (isset($_SESSION['email_taken_err']) && $_SESSION['email_taken_err'] != '') || (isset($_SESSION['pwd_match_err']) && $_SESSION['pwd_match_err'] != '')) {
+            $this->edit();
+        }
+        else {
+            $this->model->updateUser($_SESSION['id'], $fname, $lname, $email, $hashpass, $paypal_email);
+            $this->index();
+        }
     }
 
     public function submit_signup() {
@@ -82,9 +91,11 @@ class Account extends Controller {
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $confirm_password = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
         $hashpass = password_hash($password, PASSWORD_DEFAULT);
-        $this->model->validateRegistration($username, $email);
-        if((isset($_SESSION['username_taken_err']) && $_SESSION['username_taken_err'] != '') || (isset($_SESSION['email_taken_err']) && $_SESSION['email_taken_err'] != '') ) {
+        $this->model->validateRegistration($username, $email, $password, $confirm_password);
+        if((isset($_SESSION['username_taken_err']) && $_SESSION['username_taken_err'] != '') || (isset($_SESSION['email_taken_err']) && $_SESSION['email_taken_err'] != '') || (isset($_SESSION['pwd_match_err']) && $_SESSION['pwd_match_err'] != '')) {
+            $_SESSION['POST'] = $_POST;
             $this->signup();
         }
         else {
