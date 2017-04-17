@@ -65,18 +65,13 @@ class Account extends Controller {
 
     }
     public function submit_edit(){
-
         $fname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
         $lname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
-        $gender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
-        $address1 = filter_input(INPUT_POST, 'address1', FILTER_SANITIZE_STRING);
-        $address2 = filter_input(INPUT_POST, 'address2', FILTER_SANITIZE_STRING);
-        $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
-        $state = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
-        $zip = filter_input(INPUT_POST, 'zip', FILTER_SANITIZE_STRING);
-        $this->model->updateUser($_SESSION['id'],$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip, $paypal_email);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $hashpass = password_hash($password, PASSWORD_DEFAULT);
+        $this->model->updateUser($_SESSION['id'],$fname,$lname,$email,$hashpass, $paypal_email);
         $this->index();
     }
 
@@ -88,18 +83,12 @@ class Account extends Controller {
         $paypal_email = filter_input(INPUT_POST, 'paypal_email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
         $hashpass = password_hash($password, PASSWORD_DEFAULT);
-        $gender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
-        $address1 = filter_input(INPUT_POST, 'address1', FILTER_SANITIZE_STRING);
-        $address2 = filter_input(INPUT_POST, 'address2', FILTER_SANITIZE_STRING);
-        $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
-        $state = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
-        $zip = filter_input(INPUT_POST, 'zip', FILTER_SANITIZE_STRING);
         $this->model->validateRegistration($username, $email);
         if((isset($_SESSION['username_taken_err']) && $_SESSION['username_taken_err'] != '') || (isset($_SESSION['email_taken_err']) && $_SESSION['email_taken_err'] != '') ) {
             $this->signup();
         }
         else {
-            $this->model->createUser($username, $fname, $lname, $email, $hashpass, $gender, $address1, $address2, $city, $state, $zip, $paypal_email);
+            $this->model->createUser($username, $fname, $lname, $email, $hashpass, $paypal_email);
             $this->login();
         }
     }

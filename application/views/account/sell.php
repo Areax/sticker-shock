@@ -4,22 +4,22 @@
     <form enctype="multipart/form-data" action="/items/submititem" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required placeholder="Title" class="form-control" type="text" name="title">
+                <input required placeholder="Title" maxlength="30" class="form-control" type="text" name="title">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required placeholder="Size" class="form-control" type="text" name="size">
+                <input required placeholder="Size" maxlength="6" class="form-control" type="text" name="size">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required placeholder="Price" class="form-control" type="Number" min=0.01 step="any" name="price">
+                <input required placeholder="Price" maxlength="8" class="form-control" type="Number" min=0.01 step="any" name="price">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required placeholder="Shipping" class="form-control" type="Number" min=0.01 step="any" name="shipping">
+                <input required placeholder="Shipping" maxlength="8" class="form-control" type="Number" min=0.01 step="any" name="shipping">
             </div>
         </div>
         <div class="form-group row">
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-            <textarea placeholder="Enter your item description here. Some things to include: item quality, brand, etc." class="form-control" name="description" rows="6"></textarea>
+            <textarea placeholder="Enter your item description here. Some things to include: item quality, brand, etc." class="form-control" maxlength="300" name="description" rows="6"></textarea>
             </div>
         </div>
 
