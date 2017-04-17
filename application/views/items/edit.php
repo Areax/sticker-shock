@@ -4,22 +4,22 @@
     <form enctype="multipart/form-data" action="/items/updateitem/<?php echo $item->item_id;?>/<?php echo $item->available;?>" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required value="<?php echo $item->item_name;?>" class="form-control" type="text" name="title">
+                <input required value="<?php echo $item->item_name;?>" maxlength="30" class="form-control" type="text" name="title">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required value="<?php echo $item->size;?>" class="form-control" type="text" name="size">
+                <input required value="<?php echo $item->size;?>" maxlength="6" class="form-control" type="text" name="size">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required value="<?php echo $item->price;?>" class="form-control" type="Number" step="any" name="price">
+                <input required value="<?php echo $item->price;?>" maxlength="8" class="form-control" type="Number" step="any" name="price">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required value="<?php echo $item->shipping;?>" class="form-control" type="Number" step="any" name="shipping">
+                <input required value="<?php echo $item->shipping;?>" maxlength="8" class="form-control" type="Number" step="any" name="shipping">
             </div>
         </div>
         <div class="form-group row">
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <textarea class="form-control" name="description" rows="6"><?php echo $item->description;?></textarea>
+                <textarea class="form-control" maxlength="300" name="description" rows="6"><?php echo $item->description;?></textarea>
             </div>
         </div>
         <div class="form-group row">
