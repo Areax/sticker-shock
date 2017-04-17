@@ -18,6 +18,19 @@
         <script src="/js/jquery.js"></script>
         <script src="/js/tether.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script>
+            var check = function() {
+                if (document.getElementById('password').value == document.getElementById('confirm_password').value) {
+                    document.getElementById('message').innerHTML = '';
+                    var d = document.getElementById('confirm_pwd_row');
+                    d.className = "form-group row";
+                } else {
+                    var d = document.getElementById('confirm_pwd_row');
+                    d.className = "form-group row has-danger";
+                    document.getElementById('message').innerHTML = 'Passwords do not match';
+                }
+            }
+        </script>
     </head>
     <body>
     <?php include "application/views/includes/navigation.php"?>

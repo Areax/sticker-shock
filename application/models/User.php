@@ -65,22 +65,41 @@ class User extends Model {
         return $error;
     }
 
-    public function validateRegistration($username, $email) {
-        $_SESSION['username_taken_err'] = '';
-        $_SESSION['email_taken_err'] = '';
+    public function validateRegistration($username, $email, $password, $confirm_password) {
         $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
         $username_stmt->bindParam(':username', $username);
         $username_stmt->execute();
         $username_result = $username_stmt->fetchAll();
         if(count($username_result) > 0){
-            $_SESSION['username_taken_err'] = 'Username is taken.';
+            $_SESSION['username_taken_err'] = 'Username is taken';
         }
+        if($password != $confirm_password)
+            $_SESSION['pwd_match_err'] = 'Passwords do not match';
         $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
         $statement->bindParam(':email', $email);
         $statement->execute();
         $result = $statement->fetchAll();
         if(count($result) > 0){
-            $_SESSION['email_taken_err'] = 'An account already exists with this email address.';
+            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
+        }
+    }
+
+    public function validateEdit($id, $username, $email, $password, $confirm_password) {
+        $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
+        $username_stmt->bindParam(':username', $username);
+        $username_stmt->execute();
+        $username_result = $username_stmt->fetch();
+        if(count($username_result) > 0 && $username_result->user_id != $id){
+            $_SESSION['username_taken_err'] = 'Username is taken';
+        }
+        if($password != $confirm_password)
+            $_SESSION['pwd_match_err'] = 'Passwords do not match';
+        $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch();
+        if(count($result) > 0 && $result->user_id != $id){
+            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
         }
     }
 

@@ -39,12 +39,20 @@
                         <div class="col-8"> <h7><?php echo $user->first_name;?> <?php echo $user->last_name;?></h7><br></div>
                     </div>
                     <div class="row">
+                        <div class="col-4"> <h7> Username:</h7><br> </div>
+                        <div class="col-8"> <h7><?php echo $user->username;?></h7><br></div>
+                    </div>
+                    <div class="row">
                         <div class="col-4"> <h7> Email:</h7><br> </div>
                         <div class="col-8"> <h7><?php echo $user->email;?></h7><br></div>
                     </div>
                     <div class="row">
                         <div class="col-4"> <h7> Paypal Email:</h7><br> </div>
                         <div class="col-8"> <h7><?php echo $user->paypal_email;?></h7><br></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"> <h7> Average Rating:</h7><br> </div>
+                        <div class="col-8"> <h7><?php echo $user->rating;?></h7><br></div>
                     </div>
                     <!--in the same col need row of button-->
                     <div class="row">
