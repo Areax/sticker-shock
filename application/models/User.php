@@ -2,22 +2,15 @@
 class User extends Model {
     public $error;
 
-    public function createUser($username, $fname, $lname, $email, $password, $gender, $address1, $address2, $city, $state, $zip, $paypal_email){
-        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, gender, address_1, address_2, city, state, zip, paypal_email) 
-          VALUES (:username, :firstname, :lastname, :email, :password, :gender, :address1, :address2, :city, :state, :zip, :paypal_email)");
+    public function createUser($username, $fname, $lname, $email, $password, $paypal_email){
+        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, paypal_email) 
+          VALUES (:username, :firstname, :lastname, :email, :password, :paypal_email)");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':paypal_email', $paypal_email);
-
         $stmt->bindParam(':password', $password);
-        $stmt->bindparam(':gender', $gender);
-        $stmt->bindparam(':address1', $address1);
-        $stmt->bindparam(':address2', $address2);
-        $stmt->bindparam(':city', $city);
-        $stmt->bindparam(':state', $state);
-        $stmt->bindparam(':zip', $zip);
         $stmt->execute();
     }
 
@@ -36,20 +29,19 @@ class User extends Model {
         return $result;
     }
 
-    public function updateUser($id,$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip, $paypal_email){
-        $stmt= $this->db->prepare("UPDATE Accounts SET first_name = :firstname,last_name = :lastname,email = :email,
-              gender= :gender,address_1=:address1,address_2=:address2,city=:city,state=:state,zip=:zip, paypal_email = :paypal_email WHERE user_id = :userId");
-        $stmt->bindParam(':userId',$id);
+    public function updateUser($id,$fname,$lname,$email,$hashpass, $paypal_email){
+        $sql = "UPDATE Accounts SET first_name = :firstname,last_name = :lastname,email = :email,";
+        if($hashpass != "")
+            $sql .= "password = :password";
+        $sql .= ", paypal_email = :paypal_email WHERE user_id = :user_id";
+        $stmt= $this->db->prepare($sql);
+        $stmt->bindParam(':user_id',$id);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':paypal_email', $paypal_email);
-        $stmt->bindparam(':gender', $gender);
-        $stmt->bindparam(':address1', $address1);
-        $stmt->bindparam(':address2', $address2);
-        $stmt->bindparam(':city', $city);
-        $stmt->bindparam(':state', $state);
-        $stmt->bindparam(':zip', $zip);
+        if($hashpass != "")
+            $stmt->bindparam(':password', $hashpass);
         $stmt->execute();
     }
 

@@ -32,41 +32,6 @@
                         <input required type="password" class="form-control" name="password" placeholder="Password">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <select class="form-control" name="gender">
-                            <option value="" disabled selected>Gender</option>
-                            <option value="F">Female</option>
-                            <option value="M">Male</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="address1" placeholder="Address 1">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="address2" placeholder="Address 2">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="city" placeholder="City">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="state" placeholder="State">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="zip" placeholder="Zip">
-                    </div>
-                </div>
                 <?php
                     if(isset($_SESSION['username_taken_err']) &&  $_SESSION['username_taken_err'] != ''){
                         echo '<p id="error">';

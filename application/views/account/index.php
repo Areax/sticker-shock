@@ -36,49 +36,16 @@
                     <!--each row has 2 cols-->
                     <div class="row">
                         <div class="col-4"> <h7> Name: </h7><br> </div>
-                        <div class="col-8"> <h7><?= $user->first_name;?> <?= $user->last_name;?></h7><br></div>
+                        <div class="col-8"> <h7><?php echo $user->first_name;?> <?php echo $user->last_name;?></h7><br></div>
                     </div>
                     <div class="row">
                         <div class="col-4"> <h7> Email:</h7><br> </div>
-                        <div class="col-8"> <h7><?= $user->email;?></h7><br></div>
+                        <div class="col-8"> <h7><?php echo $user->email;?></h7><br></div>
                     </div>
                     <div class="row">
                         <div class="col-4"> <h7> Paypal Email:</h7><br> </div>
-                        <div class="col-8"> <h7><?= $user->paypal_email;?></h7><br></div>
+                        <div class="col-8"> <h7><?php echo $user->paypal_email;?></h7><br></div>
                     </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> Gender:</h7><br></div>
-                        <div class="col-8">
-                            <h7><?php
-                                if($user->gender == 'M')
-                                    echo "Male";
-                                else
-                                    echo "Female";
-                                ?></h7><br>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> Address 1:</h7><br> </div>
-                        <div class="col-8">  <h7><?= $user->address_1;?></h7><br> </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> Address 2:</h7><br> </div>
-                        <div class="col-8">  <h7> <?= $user->address_2; ?></h7><br> </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> City:</h7><br> </div>
-                        <div class="col-8">  <h7><?= $user->city;?></h7><br> </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> State:</h7><br> </div>
-                        <div class="col-8"> <h7><?= $user->state;?></h7><br>  </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4"> <h7> Zip:</h7><br> </div>
-                        <div class="col-8">  <h7><?= $user->zip;?></h7><br> </div>
-                    </div>
-
-
                     <!--in the same col need row of button-->
                     <div class="row">
                         <div class="col-md-9"> </div>
@@ -94,7 +61,7 @@
                     <div class="col-lg-10"><div class="h2">Your Listings</div></div>
                     <div class="col-lg-2">
                         <div class="text-right">
-                            <!--h6><a href="/account/viewListing/<?=$_SESSION['id']?>">All List</a></h6-->
+                            <!--h6><a href="/account/viewListing/<?php$_SESSION['id']?>">All List</a></h6-->
                         </div>
                     </div>
                 </div>
@@ -145,7 +112,7 @@
                     <?php if($max>= 4) {?>
                     <div class="col-lg-2">
                         <div class="text-right">
-                            <h6><a href="/account/vieworder/<?=$_SESSION['id']?>">All Order</a></h6>
+                            <h6><a href="/account/vieworder/<?php$_SESSION['id']?>">All Order</a></h6>
                         </div>
                     </div> <?php }?>
                 </div>

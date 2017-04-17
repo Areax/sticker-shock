@@ -4,68 +4,32 @@
     <form action="/account/submit_edit" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required class="form-control" type="text" name="firstname" placeholder="First Name" value="<?= $user->first_name;?>">
+                <input required class="form-control" type="text" name="firstname" placeholder="First Name" value="<?php echo $user->first_name;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required class="form-control" type="text" name="lastname" placeholder="Last Name" value="<?= $user->last_name;?>">
+                <input required class="form-control" type="text" name="lastname" placeholder="Last Name" value="<?php echo $user->last_name;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required class="form-control" type="email" name="email" placeholder="Email" value="<?= $user->email;?>">
+                <input required class="form-control" type="email" name="email" placeholder="Email" value="<?php echo $user->email;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <input required class="form-control" type="email" name="paypal_email" placeholder="Paypal Email" value="<?= $user->paypal_email;?>">
+                <input required class="form-control" type="email" name="paypal_email" placeholder="Paypal Email" value="<?php echo $user->paypal_email;?>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-6">
-                <select class="form-control" name="gender" >
-                    <?php
-                    if($user->gender === 'M'){
-                    ?>
-                    <option value="F">Female</option>
-                    <option selected value="M">Male</option>
-                    <?php
-                    }
-                    else{
-                    ?>
-                    <option selected value="F">Female</option>
-                    <option value="M">Male</option>
-                    <?php } ?>
-                </select>
+                <input class="form-control" type="password" name="password" placeholder="Password" value="">
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="address1" placeholder="Address 1" value="<?= $user->address_1;?>">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="address2" placeholder="Address 2" value="<?= $user->address_2;?>">
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="city" placeholder="City" value="<?= $user->city;?>">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="state" placeholder="State" value="<?= $user->state;?>">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control" type="text" name="zip" placeholder="Zip" value="<?= $user->zip;?>">
-            </div>
-        </div>
+        <p id="passwordHelpBlock" class="form-text text-muted">
+            Password not required to update other account information.
+        </p>
         <?php
         if(isset($_SESSION['email_taken_err']) &&  $_SESSION['email_taken_err'] != ''){
             echo '<p id="error">';
