@@ -19,7 +19,7 @@
                 echo '<hr>';
                 }?>
                 <?php }?>
-            </ul> <?php } else {echo '<hr><p>They have no listings!';}?>
+            </ul> <?php } else {echo '<p>They have no listings!';}?>
         <br>
         <div class="h2">Reviews</div><hr>
         <?php if(count($reviews) > 0){ ?> <ul class="list-unstyled"> <?php foreach($reviews as $review) {?>

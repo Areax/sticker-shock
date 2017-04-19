@@ -18,6 +18,9 @@
                         <option value="" disabled selected>Subject</option>
                         <option>General Feedback</option>
                         <option>File A Complaint</option>
+                        <option>Locked Account </option>
+                        <option>Other</option>
+
                     </select>
                 </div>
             </div>

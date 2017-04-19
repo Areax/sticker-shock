@@ -1,6 +1,6 @@
 <?php
 
-if($items == null){?>
+if($items == false){?>
     <br>
     <div class="text-center">
         <h1 align="center">No Items Found</h1>
