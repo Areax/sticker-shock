@@ -2,20 +2,15 @@
 class User extends Model {
     public $error;
 
-    public function createUser($username, $fname, $lname, $email, $password, $gender, $address1, $address2, $city, $state, $zip){
-        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, gender, address_1, address_2, city, state, zip) 
-          VALUES (:username, :firstname, :lastname, :email, :password, :gender, :address1, :address2, :city, :state, :zip)");
+    public function createUser($username, $fname, $lname, $email, $password, $paypal_email){
+        $stmt = $this->db->prepare("INSERT INTO Accounts (username, first_name, last_name, email, password, paypal_email) 
+          VALUES (:username, :firstname, :lastname, :email, :password, :paypal_email)");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':paypal_email', $paypal_email);
         $stmt->bindParam(':password', $password);
-        $stmt->bindparam(':gender', $gender);
-        $stmt->bindparam(':address1', $address1);
-        $stmt->bindparam(':address2', $address2);
-        $stmt->bindparam(':city', $city);
-        $stmt->bindparam(':state', $state);
-        $stmt->bindparam(':zip', $zip);
         $stmt->execute();
     }
 
@@ -34,19 +29,20 @@ class User extends Model {
         return $result;
     }
 
-    public function updateUser($id,$fname,$lname,$email,$gender,$address1,$address2,$city,$state,$zip){
-        $stmt= $this->db->prepare("UPDATE Accounts SET first_name = :firstname,last_name = :lastname,email = :email,
-              gender= :gender,address_1=:address1,address_2=:address2,city=:city,state=:state,zip=:zip WHERE user_id = :userId");
-        $stmt->bindParam(':userId',$id);
+    public function updateUser($id,$fname,$lname, $username, $email, $password, $hashpass, $paypal_email){
+        $sql = "UPDATE Accounts SET first_name = :firstname,last_name = :lastname,username = :username, email = :email,";
+        if($password != "")
+            $sql .= "password = :password, ";
+        $sql .= "paypal_email = :paypal_email WHERE user_id = :user_id";
+        $stmt= $this->db->prepare($sql);
+        $stmt->bindParam(':user_id',$id);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
-        $stmt->bindparam(':gender', $gender);
-        $stmt->bindparam(':address1', $address1);
-        $stmt->bindparam(':address2', $address2);
-        $stmt->bindparam(':city', $city);
-        $stmt->bindparam(':state', $state);
-        $stmt->bindparam(':zip', $zip);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':paypal_email', $paypal_email);
+        if($password != "")
+            $stmt->bindparam(':password', $hashpass);
         $stmt->execute();
     }
 
@@ -60,7 +56,7 @@ class User extends Model {
         $statement->bindParam(':username', $username);
         $statement->execute();
         $result = $statement->fetch();
-        if(count($result) > 0 && password_verify($password, $result->password)){
+        if($result != false && password_verify($password, $result->password)){
             $_SESSION['username'] = $result->username;
             $_SESSION['id'] = $result->user_id;
         }
@@ -70,24 +66,50 @@ class User extends Model {
         return $error;
     }
 
-    public function validateRegistration($username, $email) {
+    public function validateRegistration($username, $email, $password, $confirm_password) {
         $_SESSION['username_taken_err'] = '';
         $_SESSION['email_taken_err'] = '';
+        $_SESSION['pwd_match_err'] = '';
         $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
         $username_stmt->bindParam(':username', $username);
         $username_stmt->execute();
-        $username_result = $username_stmt->fetchAll();
-        if(count($username_result) > 0){
-            $_SESSION['username_taken_err'] = 'Username is taken.';
+        $username_result = $username_stmt->fetch();
+        if($username_result != false){
+            $_SESSION['username_taken_err'] = 'Username is taken';
         }
+        if($password != $confirm_password)
+            $_SESSION['pwd_match_err'] = 'Passwords do not match';
         $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
         $statement->bindParam(':email', $email);
         $statement->execute();
-        $result = $statement->fetchAll();
-        if(count($result) > 0){
-            $_SESSION['email_taken_err'] = 'An account already exists with this email address.';
+        $result = $statement->fetch();
+        if($result != false){
+            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
         }
     }
+
+    public function validateEdit($id, $username, $email, $password, $confirm_password) {
+        $_SESSION['username_taken_err'] = '';
+        $_SESSION['email_taken_err'] = '';
+        $_SESSION['pwd_match_err'] = '';
+        $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
+        $username_stmt->bindParam(':username', $username);
+        $username_stmt->execute();
+        $username_result = $username_stmt->fetch();
+        if($username_result != false && $username_result->user_id != $id){
+            $_SESSION['username_taken_err'] = 'Username ' .$username. ' is taken ' . var_dump($username_result);
+        }
+        if($password != $confirm_password)
+            $_SESSION['pwd_match_err'] = 'Passwords do not match';
+        $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch();
+        if($result != false && $result->user_id != $id){
+            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
+        }
+    }
+
 
     //get all order and item infomation from userid
     public function getOrderFromUser($id){
