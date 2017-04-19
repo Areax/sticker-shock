@@ -12,6 +12,7 @@
                         <small class="float-right" style="display:inline-block;">+ $<?php echo number_format((float)$item->shipping, 2, '.', '') . ' S&H' ?></small>
                         </small>
                         <p><?php echo $item->description?></p>
+                        <p>Size: <?php echo $item->size?></p>
                         <div class="text-left">
                             <!-- this is only a form because paypal is picky -->
                             <form action="/items/purchaseitem" method="POST">
