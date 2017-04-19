@@ -34,7 +34,7 @@
         </div>
         <div class="form-group row" id="confirm_pwd_row">
             <div class="col-md-6">
-                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" onkeyup='check();'>
+                <input type="password" class="form-control" name="confirm_password" id="confirm_password"  value="" placeholder="Confirm Password" onkeyup='check();'>
             </div>
             <div class="form-control-feedback" id="message"></div>
         </div>

@@ -79,7 +79,7 @@ class Account extends Controller {
             $this->edit();
         }
         else {
-            $this->model->updateUser($_SESSION['id'], $fname, $lname, $email, $hashpass, $paypal_email);
+            $this->model->updateUser($_SESSION['id'], $fname, $lname, $username, $email, $password, $hashpass, $paypal_email);
             $this->index();
         }
     }

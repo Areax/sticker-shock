@@ -29,18 +29,19 @@ class User extends Model {
         return $result;
     }
 
-    public function updateUser($id,$fname,$lname,$email,$hashpass, $paypal_email){
-        $sql = "UPDATE Accounts SET first_name = :firstname,last_name = :lastname,email = :email,";
-        if($hashpass != "")
-            $sql .= "password = :password";
-        $sql .= ", paypal_email = :paypal_email WHERE user_id = :user_id";
+    public function updateUser($id,$fname,$lname, $username, $email, $password, $hashpass, $paypal_email){
+        $sql = "UPDATE Accounts SET first_name = :firstname,last_name = :lastname,username = :username, email = :email,";
+        if($password != "")
+            $sql .= "password = :password, ";
+        $sql .= "paypal_email = :paypal_email WHERE user_id = :user_id";
         $stmt= $this->db->prepare($sql);
         $stmt->bindParam(':user_id',$id);
         $stmt->bindParam(':firstname', $fname);
         $stmt->bindParam(':lastname', $lname);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':username', $username);
         $stmt->bindParam(':paypal_email', $paypal_email);
-        if($hashpass != "")
+        if($password != "")
             $stmt->bindparam(':password', $hashpass);
         $stmt->execute();
     }
@@ -55,7 +56,7 @@ class User extends Model {
         $statement->bindParam(':username', $username);
         $statement->execute();
         $result = $statement->fetch();
-        if(count($result) > 0 && password_verify($password, $result->password)){
+        if($result != false && password_verify($password, $result->password)){
             $_SESSION['username'] = $result->username;
             $_SESSION['id'] = $result->user_id;
         }
@@ -66,30 +67,14 @@ class User extends Model {
     }
 
     public function validateRegistration($username, $email, $password, $confirm_password) {
-        $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
-        $username_stmt->bindParam(':username', $username);
-        $username_stmt->execute();
-        $username_result = $username_stmt->fetchAll();
-        if(count($username_result) > 0){
-            $_SESSION['username_taken_err'] = 'Username is taken';
-        }
-        if($password != $confirm_password)
-            $_SESSION['pwd_match_err'] = 'Passwords do not match';
-        $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
-        $statement->bindParam(':email', $email);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        if(count($result) > 0){
-            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
-        }
-    }
-
-    public function validateEdit($id, $username, $email, $password, $confirm_password) {
+        $_SESSION['username_taken_err'] = '';
+        $_SESSION['email_taken_err'] = '';
+        $_SESSION['pwd_match_err'] = '';
         $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
         $username_stmt->bindParam(':username', $username);
         $username_stmt->execute();
         $username_result = $username_stmt->fetch();
-        if(count($username_result) > 0 && $username_result->user_id != $id){
+        if($username_result != false){
             $_SESSION['username_taken_err'] = 'Username is taken';
         }
         if($password != $confirm_password)
@@ -98,10 +83,33 @@ class User extends Model {
         $statement->bindParam(':email', $email);
         $statement->execute();
         $result = $statement->fetch();
-        if(count($result) > 0 && $result->user_id != $id){
+        if($result != false){
             $_SESSION['email_taken_err'] = 'An account already exists with this email address';
         }
     }
+
+    public function validateEdit($id, $username, $email, $password, $confirm_password) {
+        $_SESSION['username_taken_err'] = '';
+        $_SESSION['email_taken_err'] = '';
+        $_SESSION['pwd_match_err'] = '';
+        $username_stmt = $this->db->prepare("SELECT * from Accounts WHERE username = :username");
+        $username_stmt->bindParam(':username', $username);
+        $username_stmt->execute();
+        $username_result = $username_stmt->fetch();
+        if($username_result != false && $username_result->user_id != $id){
+            $_SESSION['username_taken_err'] = 'Username ' .$username. ' is taken ' . var_dump($username_result);
+        }
+        if($password != $confirm_password)
+            $_SESSION['pwd_match_err'] = 'Passwords do not match';
+        $statement = $this->db->prepare("SELECT * from Accounts WHERE email = :email");
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch();
+        if($result != false && $result->user_id != $id){
+            $_SESSION['email_taken_err'] = 'An account already exists with this email address';
+        }
+    }
+
 
     //get all order and item infomation from userid
     public function getOrderFromUser($id){
