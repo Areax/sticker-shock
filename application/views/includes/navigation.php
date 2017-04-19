@@ -22,7 +22,7 @@ page (which is currently a clone of the home page).
         			$page=0;
         	?>
         <form class="search-bar-form" action="/items" method="get">
-            <input class="search-bar" type="text" name="search" placeholder="Search" /><br />
+            <input class="search-bar" type="text" name="search" placeholder="Search Items" /><br />
         </form>        
             <ul class="navbar-nav ml-auto">
                 <li class= "<?php if ($page==0) echo 'nav-item active'; else echo 'nav-item'?>" >
