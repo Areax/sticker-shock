@@ -159,6 +159,7 @@ class Account extends Controller {
             $details = $order_helper ->getItemIdFromOrderId($orderId);
             $item_helper = new Item($this->db);
             $item = $item_helper->getItemById($details->item_id);
+            $seller_account = $this->model->readUser($item->account_id);
             require 'application/views/account/invoice.php';
 
         }

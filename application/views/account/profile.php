@@ -9,7 +9,7 @@
             <ul class="list-unstyled"><?php
             foreach($listings as $item) {?>
                 <li class="media">
-                    <img class="mr-3" style="width:64px; height:64px;" src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400'; ?>" alt="Generic placeholder image">
+                    <img class="mr-3" style="width:64px; height:64px;" src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400?text=Image+Unavailable'; ?>" alt="Generic placeholder image">
                     <div class="media-body">
                         <h5 class="mt-0 mb-1"><?php if($item->available){?><a href="/items/item/<?php echo $item->item_id?>"><?php echo $item->item_name?></a><?php } else echo $item->item_name;?></h5>
                         <?php echo $item->description?>

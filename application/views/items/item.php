@@ -4,7 +4,7 @@
             <?php include 'application/views/includes/category-menu.php';?>
             <div class="col-md-9">
                 <div class="card break-word">
-                    <img class="card-img-top img-fluid" style="object-fit: contain;" src="<?php if(file_exists('uploads/item_'. $item->item_id)) {echo '/uploads/item_'.$item->item_id;} else {echo 'https://placehold.it/800x300';}?>" alt="">
+                    <img class="card-img-top img-fluid" style="object-fit: contain;" src="<?php if(file_exists('uploads/item_'. $item->item_id)) {echo '/uploads/item_'.$item->item_id;} else {echo 'https://placehold.it/800x300?text=Image+Unavailable';}?>" alt="">
                     <div class="card-block">
                         <h4 style="display:inline-block;"><?php echo $item->item_name?></h4>
                         <h5 class="float-right" style="display:inline-block;">$<?php echo number_format((float)$item->price, 2, '.', ''); ?></h5>

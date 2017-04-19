@@ -4,7 +4,7 @@
     <form enctype="multipart/form-data" action="/items/submititem" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required placeholder="Title" maxlength="30" class="form-control" type="text" name="title">
+                <input required placeholder="Title" maxlength="50" class="form-control" type="text" name="title">
             </div>
         </div>
         <div class="form-group row">
