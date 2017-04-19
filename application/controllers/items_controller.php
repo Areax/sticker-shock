@@ -8,7 +8,8 @@ class Items extends Controller {
     public $search = null;
 
     public function index($category = null, $args = null) {
-
+        require 'application/models/User.php';
+        $user = new User($this->db);
         # Graham L.:
         # The following if/else clusterfuck is the simplest way I could come up
         # with to implement categories/subcategories.
@@ -45,25 +46,46 @@ class Items extends Controller {
     }
 
     public function item($id) {
+        require 'application/models/User.php';
+        $user = new User($this->db);
         $item = $this->model->readItem($id);
-
         if (!$item) {
             header('location: /pages/error');
             return;
         }
 
         $this->title = $item->item_name;
-        require 'application/views/items/item.php';
-    }
 
-    public function order($id) {
-        $this->loadOrderModel();
-        $order = $this->model->getOrderById($id);
 
-        if (!$order) {
-            header('location: /pages/error');
-            return;
+        require 'application/class/Review.php';
+
+        $reviews = array();
+
+        if ($item->reviewers != null) {
+            $reviewers = explode(',', $item->reviewers);
+            $ratings = explode(',', $item->ratings);
+            $comments = explode('----', $item->comments);
+            $review_dates = explode(',', $item->review_dates);
+            $review_titles = explode(',', $item->review_titles);
+
+
+            if (sizeof($reviewers) != sizeof($ratings) || sizeof($reviewers) != sizeof($comments) || sizeof($reviewers) != sizeof($review_dates)) {
+                header('location: /pages/error');
+            }
+
+            $iterator = new MultipleIterator;
+            $iterator->attachIterator(new ArrayIterator($reviewers));
+            $iterator->attachIterator(new ArrayIterator($ratings));
+            $iterator->attachIterator(new ArrayIterator($comments));
+            $iterator->attachIterator(new ArrayIterator($review_dates));
+            $iterator->attachIterator(new ArrayIterator($review_titles));
+
+            foreach ($iterator as $values) {
+                $reviews[] = new Review($values[0], $values[1], $values[2], $values[3], $values[4]);
+            } 
         }
+
+        require 'application/views/items/item.php';
     }
 
     public function submititem()
@@ -95,6 +117,16 @@ class Items extends Controller {
         require 'application/views/items/edit.php';
     }
 
+    public function editsolditem($id){
+        $item = $this->model->getItemById($id);
+        if (!$item) {
+            header('location: /pages/error');
+            return;
+        }
+        $this->title = 'Update Item: '.$item->item_name;
+        require 'application/views/items/update.php';
+    }
+
     public function updateitem($id, $status){
         $account_id = $_SESSION['id'];
         $item_id = $id;
@@ -108,53 +140,66 @@ class Items extends Controller {
         $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
         $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
         $this->item($item_id);
+    }
 
+    public function updatesolditem($id){
+        require 'application/models/Order.php';
+        require 'application/models/User.php';
+        $user_helper = new User($this->db);
+        $order_helper = new Order($this->db);
+        $tracking = filter_input(INPUT_POST, 'tracking', FILTER_SANITIZE_STRING);
+        $comments = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+        $item = $this->model->getItemById($id);
+        $account_id = $item->account_id;
+        $item_id = $id;
+        $title = $item->item_name;
+        $size = $item->size;
+        $price = $item->price;
+        $shipping = $item->shipping;
+        $description = $item->description;
+        $category = $item->category;
+        $subcategory = $item->subcategory;
+        $status = 0;
+        $this->model->updateItem($account_id, $item_id, $title, $size, $price, $shipping, $description, $category, $subcategory, $status, $tracking);
+        $message = $comments;
+        $message = wordwrap($message, 70, "\r\n");
+        $order_details = $order_helper->getOrderByItemId($item_id);
+        $order_details = $order_helper->getOrderById($order_details->order_id);
+        $recipient = $user_helper->readUser($order_details->account_id);
+        $subject = "Item \"$title\" Shipped!";
+        $recipient_email = $recipient->email;
+        $mailheader = "From: stickershock2@gmail.com \r\n";
+        $formcontent = "Your item has been shipped!\r\nTracking Number: $tracking\n\r";
+        if($comments !=''){
+            $formcontent .= "Comments From Seller: $message";
+        }
+        $mail = mail($recipient_email, $subject, $formcontent, $mailheader);
+        header('location: /account');
+    }
+
+    public function updatestatus($item_id){
+        $this->model->purchaseItem($item_id);
+        header('location: /orders/createorder');
     }
 
     public function purchaseitem(){
         include 'application/models/User.php';
         if(isset($_SESSION['id']) && $_SESSION['id'] != '') {
-            /*$users = new User($this->db);
-            $user = $users->readUser($_SESSION['id']);
-            $item_id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING);
-            //$this->model->purchaseItem($item_id);
-
-            # send to Order;
-
-            $account_id = $user->user_id;
-            //basic values
-            $tax = 10;
-            $subtotal = 10;
-            //get item
-            $shipping = $this->model->readItem($item_id)->shipping;
-
-            //get account
-            $address_1 = $user->address_1;
-            $city = $user->city;
-            $state = $user->state;
-            $zip = $user->zip;
-
-
-            //$this->loadOrderModel();
-            //$id = $this->model->createOrder($account_id, $tax, $subtotal, $shipping, $address_1, $city, $state, $zip, $item_id);
-
-            //$this->order($id); */
-
-
-            # reroute
-            require 'application/views/pages/checkout.php';
+            require 'application/helper/checkout.php';
         }else{
             $_SESSION['login_error'] = 'You must be logged in to purchase an item';
-            header('location: /account/login');
+            header('location: /account/login?page=items,item,' .$_POST['item_id']);
         }
 
     }
 
-    public function loadOrderModel()
-    {
-        include 'application/models/Order.php';
-        $this->model = new Order($this->db);
+    public function purchasesuccess(){
+        require 'application/models/User.php';
+        $user = new User($this->db);
+        $item = $this->model;
+        require 'application/views/items/success.php';
     }
+
 
     public function deleteitem($id){
         $this->model->deleteItem($id);
