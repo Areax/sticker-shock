@@ -56,13 +56,19 @@ class User extends Model {
         $statement->bindParam(':username', $username);
         $statement->execute();
         $result = $statement->fetch();
-        if($result != false && password_verify($password, $result->password)){
+        if($result != false && password_verify($password, $result->password) && $result->banned == 0){
             $_SESSION['username'] = $result->username;
             $_SESSION['id'] = $result->user_id;
         }
         else{
-            $error = 'Username and password combination are invalid<br>';
+            if($result->banned==1){
+                $error = 'Your account has been locked. <a href=\'/pages/contact/\'> Contact us </a> if you believe this is in error.';
+            }
+            else {
+                $error = 'Username and password combination are invalid<br>';
+            }
         }
+
         return $error;
     }
 

@@ -80,7 +80,7 @@
                         <div class="well break-word">
                             <div class="media row">
                                 <div class="media-left col-lg-5">
-                                    <img src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" class="media-object" style="width:300px">
+                                    <img src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400?text=Image+Unavailable';?>" class="media-object" style="width:300px">
                                 </div>
                                 <div class="media-body col-lg-5"  style="word-wrap: break-word; display: inline-block;">
                                     <h4 class="media-heading"><?php echo $item->item_name?></h4>
@@ -184,7 +184,7 @@
                                 <div class="col-lg-9">
                                     <div class="media">
                                         <img class="d-flex mr-5"
-                                             src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400';?>" alt="Generic placeholder image" style="width:300px">
+                                             src="<?php if(file_exists('uploads/item_'.$item->item_id)) {echo '/uploads/item_'.$item->item_id;} else echo 'https://placehold.it/700x400?text=Image+Unavailable';?>" alt="Generic placeholder image" style="width:300px">
                                         <div class="media-body">
                                             <h4 class="media-heading"><?php echo $order->item_name?></h4>
                                             <p><?php echo $order->description;?></p>

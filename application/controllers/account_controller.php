@@ -37,6 +37,10 @@ class Account extends Controller {
 
     public function submit_login(){
         $_SESSION['login_error'] = '';
+        if(!isset($_POST['username'])) {
+            $this->login();
+            return;
+        }
         $username=filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
         $password=filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
         $error = $this->model->authenticate($username, $password);
@@ -159,6 +163,7 @@ class Account extends Controller {
             $details = $order_helper ->getItemIdFromOrderId($orderId);
             $item_helper = new Item($this->db);
             $item = $item_helper->getItemById($details->item_id);
+            $seller_account = $this->model->readUser($item->account_id);
             require 'application/views/account/invoice.php';
 
         }
