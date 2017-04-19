@@ -4,7 +4,7 @@ require 'application/views/layouts/header.php'; ?>
 
 <div class="container">
     <div class="card">
-        <img class="card-img-top img-fluid" style="object-fit: contain;" src="<?php if(file_exists('uploads/item_'. $item->item_id)) {echo '/uploads/item_'.$item->item_id;} else {echo 'https://placehold.it/800x300';}?>" alt="">
+        <img class="card-img-top img-fluid" style="object-fit: contain;" src="<?php if(file_exists('uploads/item_'. $item->item_id)) {echo '/uploads/item_'.$item->item_id;} else {echo 'https://placehold.it/800x300?text=Image+Unavailable';}?>" alt="">
         <div class="card-footer">
             <h4>Order #<?php echo $invoice->order_id .': ';?><?php echo $item->item_name?></h4>
             <span><b>Size: </b></span><?php echo $invoice->size ?><br>

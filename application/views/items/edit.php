@@ -4,7 +4,7 @@
     <form enctype="multipart/form-data" action="/items/updateitem/<?php echo $item->item_id;?>/<?php echo $item->available;?>" method="POST">
         <div class="form-group row">
             <div class="col-md-6">
-                <input required value="<?php echo $item->item_name;?>" maxlength="30" class="form-control" type="text" name="title">
+                <input required value="<?php echo $item->item_name;?>" maxlength="50" class="form-control" type="text" name="title">
             </div>
         </div>
         <div class="form-group row">
