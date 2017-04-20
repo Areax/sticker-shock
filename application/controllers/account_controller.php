@@ -160,10 +160,11 @@ class Account extends Controller {
             $this->title = 'Invoice';
             $invoice = $this->model->getPurchase($orderId);
             $order_helper = new Order($this->db);
-            $details = $order_helper ->getItemIdFromOrderId($orderId);
+            $details = $order_helper->getItemIdFromOrderId($orderId);
             $item_helper = new Item($this->db);
             $item = $item_helper->getItemById($details->item_id);
             $seller_account = $this->model->readUser($item->account_id);
+            $buyer_account = $this->model->readUser($order_helper->getAccountByOrderId($orderId)->account_id);
             require 'application/views/account/invoice.php';
 
         }

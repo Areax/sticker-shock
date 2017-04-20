@@ -94,11 +94,19 @@
                                         </div>
                                     </form>
                                     <?php }else{ ?>
+
+                                        <div class="btn-group-vertical" >
                                         <form action="/items/editsolditem/<?php echo $item->item_id?>" method="POST">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-secondary btn-block" name="updateitem">Update</button>
+                                                <button type="submit" class="btn btn-secondary btn-block" name="updateitem" style="width:120px">Update</button>
                                             </div>
                                         </form>
+                                        <form action="/account/invoice/<?php echo $order_helper->getOrderByItemId($item->item_id)->order_id ?>" method="POST">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-secondary btn-block" name="updateitem" style="width:120px">View Invoice</button>
+                                            </div>
+                                        </form>
+                                        </div>
                                     <?php }?>
                                     <form action="/items/deleteitem/<?php echo $item->item_id?>" method="POST">
                                         <div class="form-group">
@@ -148,7 +156,7 @@
                                     <div class="text-center">
                                         <h7>
                                             <b>Ship to<br></b>
-                                            <?php echo$order->address_1 . ' ' .$order->address_2 .'<br>'. $order->city . ', ' .' '.$order->state .' '. $order->zip; ?>
+                                            <?php echo $order->address_1 . ' ' .$order->address_2 .'<br>'. $order->city . ', ' .' '.$order->state .' '. $order->zip; ?>
 
                                         </h7>
                                     </div>

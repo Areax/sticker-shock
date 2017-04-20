@@ -50,6 +50,14 @@ class Order extends Model {
         return $query->fetch();
     }
 
+    public function getAccountByOrderId($order_id){
+        $sql = "SELECT * FROM AccountOrders WHERE order_id='$order_id'";
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        return $query->fetch();
+    }
+
     public function getOrdersByAccountId($id) {
         $sql = "SELECT * FROM Orders WHERE account_id='$id'";
         $query = $this->db->prepare($sql);

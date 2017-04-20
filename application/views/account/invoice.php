@@ -8,6 +8,7 @@ require 'application/views/layouts/header.php'; ?>
         <div class="card-footer">
             <h4>Order #<?php echo $invoice->order_id .': ';?><?php echo $item->item_name?></h4>
             <span><b>Seller: </b></span> <a href="/account/profile/<?php echo $seller_account->user_id;?>"><?php echo $seller_account->username;?></a> <br>
+            <span><b>Buyer: </b></span> <a href="/account/profile/<?php echo $buyer_account->user_id;?>"><?php echo $buyer_account->username;?></a> <br>
             <span><b>Size: </b></span><?php echo $invoice->size ?><br>
             <span><b>Shipping Address: </b></span><?php echo $invoice->address_1  .' '. $invoice->address_2.' '.$invoice->city ?>, <?php echo $invoice->state .' '. $invoice->zip ?><br>
             <span><b>Order Date: </b></span> <?php echo date("m/d/Y g:i A ", strtotime($invoice->completion_date)); echo date_default_timezone_get(); ?> <br>
