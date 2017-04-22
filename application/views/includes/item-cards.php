@@ -31,6 +31,15 @@ if($items == false || $items == null){?>
                 $total = (float)$item->price + (float)$item->shipping;
                 echo number_format((float)$total, 2, '.', '');?></h5>
             <p class="card-text"><?php echo $item->description?></p>
+            <p class="card-text">
+                <form action="/account/otherAccount" method="POST">
+                    <input type="hidden" name="user" type="Number" value="<?php echo $user->readUser($item->account_id)->user_id;?>" >
+                    <p>Seller:
+                    <button type="submit" class="btn btn-link" name="submit"><?php echo $user->readUser($item->account_id)->username;?>
+                    </button>
+                    </p>
+                </form>
+            </p>
         </div>
         <div class="card-footer">
             <!-- 

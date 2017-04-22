@@ -14,6 +14,7 @@
                         <small class="float-left"><?php echo 'Size: ' . $item->size;?></small>
                         <br>
                         <p><?php echo $item->description?></p>
+                        <p>Size: <?php echo $item->size?></p>
                         <div class="text-left">
                             <!-- this is only a form because paypal is picky -->
                             <form action="/items/purchaseitem" method="POST">
